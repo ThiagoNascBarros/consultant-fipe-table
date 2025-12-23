@@ -1,5 +1,6 @@
 package br.com.consultantfipetable;
 
+import br.com.consultantfipetable.Business.MenuBusiness;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ public class ConsultantFipeTableApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        MenuBusiness menu = new MenuBusiness();
+        menu.showMenu();
     }
 }
