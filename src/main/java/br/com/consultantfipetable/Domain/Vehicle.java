@@ -1,16 +1,16 @@
 package br.com.consultantfipetable.Domain;
 
-public class Car {
+public class Vehicle {
     private int code;
     private String brand;
 
-    public Car(int code, String brand) {
-        this.code = code;
+    public Vehicle(String code, String brand) {
+        this.code = Integer.parseInt(String.valueOf(code));
         this.brand = brand;
     }
 
-    public Car(String code, String brand) {
-        this.code = Integer.parseInt(String.valueOf(code));
+    public Vehicle(int code, String brand) {
+        this.code = code;
         this.brand = brand;
     }
 
