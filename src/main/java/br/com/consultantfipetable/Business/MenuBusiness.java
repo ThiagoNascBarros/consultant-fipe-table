@@ -1,62 +1,84 @@
 package br.com.consultantfipetable.Business;
 
-import br.com.consultantfipetable.Business.Interfaces.IMenuBusiness;
-import br.com.consultantfipetable.Domain.EOptions;
-import br.com.consultantfipetable.Domain.Vehicle;
-import br.com.consultantfipetable.Domain.VehicleResponse;
+import br.com.consultantfipetable.Domain.DataClass;
+import br.com.consultantfipetable.Enums.EOptions;
+import br.com.consultantfipetable.Domain.Data;
+import br.com.consultantfipetable.Domain.ModelVehicle;
 import br.com.consultantfipetable.Service.Consumer;
 import br.com.consultantfipetable.Service.ConvertData;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
-public class MenuBusiness implements IMenuBusiness {
-    private final String ADDRESS = "https://parallelum.com.br/fipe/api/v1";
+public class MenuBusiness {
+    private final String URL_ADDRESS = "https://parallelum.com.br/fipe/api/v1";
     private final Consumer consumer = new Consumer();
     private final ConvertData convert = new ConvertData();
     private final Scanner input = new Scanner(System.in);
 
     public void showMenu() {
+        var address = URL_ADDRESS;
         String response = "";
-        List<VehicleResponse> brands;
+        List<Data> brands;
 
         System.out.print("""
-               \n----------------- Welcome to the FIPE table checker -----------------\s
-                 Cars\s
-                 Trucks\s
-                 Motorcycles\s
-               ---------------------------------------------------------------------\s
-               \s
-               Search:""");
+                \n----------------- Welcome to the FIPE table checker -----------------\s
+                  Cars\s
+                  Trucks\s
+                  Motorcycles\s
+                ---------------------------------------------------------------------\s
+                \s
+                Search:""");
 
         var option = input.nextLine();
         if (option.equalsIgnoreCase(EOptions.CARS.getValue())) {
-            response = consumer.getDataOfAPI(ADDRESS + "/carros/marcas");
+            address = address + "/carros/marcas";
         }
 
         if (option.equalsIgnoreCase(EOptions.TRUCKS.getValue())) {
-            response = consumer.getDataOfAPI(ADDRESS + "/caminhoes/marcas");
+            address = address + "/caminhoes/marcas";
         }
 
         if (option.equalsIgnoreCase(EOptions.MOTORCYCLES.getValue())) {
-            response = consumer.getDataOfAPI(ADDRESS + "/motos/marcas");
+            address = address + "/motos/marcas";
         }
 
-        brands = convert.getList(response, VehicleResponse.class);
-        Show(brands, Vehicle.class).forEach(System.out::println);
+        response = consumer.getDataOfAPI(address);
+        brands = convert.getList(response, Data.class);
 
+        brands.stream()
+                .map(data -> new DataClass(data.code(), data.brand()))
+                .sorted(Comparator.comparing(DataClass::getCode))
+                .forEach(System.out::println);
+
+
+        System.out.println("\nWhat's code of your vehicle? ");
+        var vehicleCode = input.nextLine();
+
+        address = address + "/" + vehicleCode + "/modelos";
+        var jsonModels = consumer.getDataOfAPI(address);
+
+        var models = convert.getData(jsonModels, ModelVehicle.class);
+
+        System.out.print("\nModels this brand:");
+        models.models().stream()
+                .sorted(Comparator.comparing(Data::code))
+                .forEach(System.out::println);
+
+        System.out.print("\nChoose your model by code:\s");
+        var modelByCode = input.nextLine();
+
+        address = address + "/" + modelByCode + "/anos";
+
+        jsonModels = consumer.getDataOfAPI(address);
+        var modelsOfYears = convert.getList(jsonModels, Data.class);
+        modelsOfYears.stream()
+                .map(data -> new DataClass(data.code().replace("-", ""),
+                        data.brand()))
+                .sorted(Comparator.comparing(DataClass::getCode))
+                .forEach(System.out::println);
 
     }
-
-    public List<Vehicle> Show(List<VehicleResponse> list, Class<Vehicle> classT) {
-        return list.stream()
-                .map(t -> new Vehicle(t.code(), t.brand()))
-                .collect(Collectors.toList()).stream()
-                .sorted(Comparator.comparing(Vehicle::getCode))
-                .collect(Collectors.toList());
-    }
-
 
 }
