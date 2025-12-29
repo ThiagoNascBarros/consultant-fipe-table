@@ -1,4 +1,4 @@
-package br.com.consultantfipetable.Domain;
+package br.com.consultantfipetable.Enums;
 
 public enum EOptions {
     CARS("cars"),
@@ -14,5 +14,4 @@ public enum EOptions {
     public String getValue() {
         return value;
     }
-
 }
