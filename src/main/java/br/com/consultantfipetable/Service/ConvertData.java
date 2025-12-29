@@ -11,8 +11,7 @@ public class ConvertData implements ICovertData {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @Override
-    public <T> T ConvertData(String json, Class<T> tClass) {
+    public <T> T getData(String json, Class<T> tClass) {
         try {
             return mapper.readValue(json, tClass);
         } catch (JsonProcessingException e) {
@@ -24,7 +23,6 @@ public class ConvertData implements ICovertData {
     public <T> List<T> getList(String json, Class<T> tClass) {
         CollectionType list = mapper.getTypeFactory()
                 .constructCollectionType(List.class, tClass);
-
         try {
             return mapper.readValue(json, list);
         } catch (JsonProcessingException e) {
