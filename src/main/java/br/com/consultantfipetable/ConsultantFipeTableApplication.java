@@ -1,6 +1,6 @@
 package br.com.consultantfipetable;
 
-import br.com.consultantfipetable.Business.MenuBusiness;
+import br.com.consultantfipetable.business.MenuBusiness;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
