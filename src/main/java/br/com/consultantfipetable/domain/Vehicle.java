@@ -22,7 +22,7 @@ public class Vehicle {
     @Override
     public String toString() {
         return String.format("""
-        Vehicle {
+        Vehicle data {
           codeFipe: '%s',
           fuel: '%s',
           yearBrand: '%s',

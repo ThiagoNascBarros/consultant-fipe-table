@@ -67,17 +67,18 @@ public class MenuBusiness {
 
         System.out.print("\nModels this brand:");
         models.models().stream()
-                .sorted(Comparator.comparing(Data::code))
-                .forEach(System.out::println);
+                .map(m -> new DataClass(m.code(), m.brand()))
+                .sorted(Comparator.comparing(DataClass::getCode))
+                .forEach(e -> logger.info(e.toString()));
 
         System.out.print("\nChoose your model by code:\s");
         var modelByCode = input.nextLine();
 
         address = address + "/" + modelByCode + "/anos";
-
         jsonModels = consumer.run(address);
-        var modelsOfYears = convert.getList(jsonModels, Data.class);
 
+        var modelsOfYears = convert.getList(jsonModels, Data.class);
+        // Saving vehicles codes for comparison later
         var codesVehicles = modelsOfYears.stream()
                         .map(Data::code)
                         .toList();
@@ -112,14 +113,14 @@ public class MenuBusiness {
         datas.stream()
                 .map(data -> new DataClass(data.code(), data.brand()))
                 .sorted(Comparator.comparing(DataClass::getCode))
-                .forEach(System.out::println);
+                .forEach(e -> logger.info(e.toString()));
     }
 
     private void getDatas(List<Data> datas, String target, String replacement) {
         datas.stream()
                 .map(data -> new DataClass(data.code().replace(target, replacement), data.brand()))
                 .sorted(Comparator.comparing(DataClass::getCode))
-                .forEach(System.out::println);
+                .forEach(e -> logger.info(e.toString()));
     }
 
 
