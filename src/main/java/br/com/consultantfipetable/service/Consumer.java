@@ -1,4 +1,6 @@
-package br.com.consultantfipetable.Service;
+package br.com.consultantfipetable.service;
+
+import br.com.consultantfipetable.exceptions.FailedInConsumerProcess;
 
 import java.io.IOException;
 import java.net.URI;
@@ -8,7 +10,7 @@ import java.net.http.HttpResponse;
 
 public class Consumer {
 
-    public String getDataOfAPI(String address) {
+    public String run(String address) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(address))
@@ -18,7 +20,8 @@ public class Consumer {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            throw new FailedInConsumerProcess(e.getMessage());
         }
 
         return response.body();

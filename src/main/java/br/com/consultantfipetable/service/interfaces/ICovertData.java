@@ -1,4 +1,4 @@
-package br.com.consultantfipetable.Service.Interfaces;
+package br.com.consultantfipetable.service.interfaces;
 
 import java.util.List;
 

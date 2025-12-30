@@ -1,6 +1,7 @@
-package br.com.consultantfipetable.Service;
+package br.com.consultantfipetable.service;
 
-import br.com.consultantfipetable.Service.Interfaces.ICovertData;
+import br.com.consultantfipetable.exceptions.FailedConvertJson;
+import br.com.consultantfipetable.service.interfaces.ICovertData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -15,7 +16,7 @@ public class ConvertData implements ICovertData {
         try {
             return mapper.readValue(json, tClass);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new FailedConvertJson(e.getMessage());
         }
     }
 
@@ -26,7 +27,7 @@ public class ConvertData implements ICovertData {
         try {
             return mapper.readValue(json, list);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new FailedConvertJson(e.getMessage());
         }
     }
 

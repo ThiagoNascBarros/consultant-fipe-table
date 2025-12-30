@@ -1,4 +1,4 @@
-package br.com.consultantfipetable.Enums;
+package br.com.consultantfipetable.enums;
 
 public enum EOptions {
     CARS("cars"),

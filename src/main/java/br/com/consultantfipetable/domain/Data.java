@@ -1,4 +1,4 @@
-package br.com.consultantfipetable.Domain;
+package br.com.consultantfipetable.domain;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

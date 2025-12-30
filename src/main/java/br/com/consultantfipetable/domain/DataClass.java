@@ -1,4 +1,4 @@
-package br.com.consultantfipetable.Domain;
+package br.com.consultantfipetable.domain;
 
 public class DataClass {
 
